@@ -69,13 +69,13 @@ namespace DBEditor
 
 
             // update
-            command = new SqlCommand(@"UPDATE People SET FIO = @FIO,
-Birthday = @Birthday, Email = @Email, Phone = @Phone WHERE ID = @ID", connection);
+            command = new SqlCommand(@"UPDATE Employee SET name = @name,
+age = @age, salary = @salary, idDep = @idDep WHERE ID = @ID", connection);
 
-            command.Parameters.Add("@FIO", SqlDbType.NVarChar, -1, "FIO");
-            command.Parameters.Add("@Birthday", SqlDbType.NVarChar, -1, "Birthday");
-            command.Parameters.Add("@Email", SqlDbType.NVarChar, 100, "Email");
-            command.Parameters.Add("@Phone", SqlDbType.NVarChar, -1, "Phone");
+            command.Parameters.Add("@name", SqlDbType.NVarChar, -1, "name");
+            command.Parameters.Add("@age", SqlDbType.NVarChar, -1, "age");
+            command.Parameters.Add("@salary", SqlDbType.NVarChar, 100, "salary");
+            command.Parameters.Add("@idDep", SqlDbType.NVarChar, -1, "idDep");
             param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
 
             param.SourceVersion = DataRowVersion.Original;

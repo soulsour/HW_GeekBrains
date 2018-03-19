@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DBEditor"
         mc:Ignorable="d"
-        Title="DBEditor" Loaded="Window_Loaded" Width="600" MaxWidth="600" MinHeight="300" MinWidth="600">
+        Title="DBEditor" Loaded="Window_Loaded" Width="300" MaxWidth="300" MinHeight="300" MinWidth="600">
 
 
-    <Grid HorizontalAlignment="Left">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -20,10 +20,10 @@
         </Grid.ColumnDefinitions>
         <DataGrid x:Name="peopleDataGrid" Grid.ColumnSpan="3" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10" HorizontalAlignment="Center" IsReadOnly="True" >
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="idColumn" Binding="{Binding ID}" Header="Id" IsReadOnly="True" Width="Auto"/>
-                <DataGridTextColumn x:Name="fIOColumn" Binding="{Binding FIO}" Header="Имя" Width="Auto"/>
-                <DataGridTextColumn x:Name="birthdayColumn" Binding="{Binding Birthday}" Header="Возраст" Width="Auto"/>
-                <DataGridTextColumn x:Name="emailColumn" Binding="{Binding Email}" Header="Зарплата" Width="Auto"/>
+                <DataGridTextColumn x:Name="idColumn" Binding="{Binding id}" Header="Id" IsReadOnly="True" Width="Auto"/>
+                <DataGridTextColumn x:Name="fIOColumn" Binding="{Binding name}" Header="Имя" Width="Auto"/>
+                <DataGridTextColumn x:Name="birthdayColumn" Binding="{Binding age}" Header="Возраст" Width="Auto"/>
+                <DataGridTextColumn x:Name="emailColumn" Binding="{Binding salary}" Header="Зарплата" Width="Auto"/>
                 <DataGridTextColumn x:Name="phoneColumn" Binding="{Binding depname}" Header="Департамент" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
