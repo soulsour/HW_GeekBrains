@@ -51,42 +51,43 @@ namespace DBEditor
                 SqlCommand command = new SqlCommand("SELECT emp.id, emp.name, emp.age, emp.salary, dep.name as depname FROM Employee emp LEFT JOIN Department dep on emp.idDep = dep.id", connection);
                 adapter.SelectCommand = command;
 
-//                //insert
-//                command = new SqlCommand(@"INSERT INTO People (FIO, Birthday, Email, Phone) 
-//                          VALUES (@FIO, @Birthday, @Email, @Phone); SET @ID = @@IDENTITY;",
-//                              connection);
+            //insert
+            command = new SqlCommand(@"INSERT INTO Employee ( name,age,salary,idDep) 
+                          VALUES ( @name,@age,@salary,@idDep); SET @ID = @@IDENTITY;",
+                          connection);
 
-//                command.Parameters.Add("@FIO", SqlDbType.NVarChar, -1, "FIO");
-//                command.Parameters.Add("@Birthday", SqlDbType.NVarChar, -1, "Birthday");
-//                command.Parameters.Add("@Email", SqlDbType.NVarChar, 100, "Email");
-//                command.Parameters.Add("@Phone", SqlDbType.NVarChar, -1, "Phone");
+            //command.Parameters.Add("@id", SqlDbType.Int, -1, "id");
+            command.Parameters.Add("@name", SqlDbType.NVarChar, -1, "name");
+            command.Parameters.Add("@age", SqlDbType.Int, 100, "age");
+            command.Parameters.Add("@salary", SqlDbType.Int, -1, "salary");
+            command.Parameters.Add("@idDep", SqlDbType.Int, -1, "idDep");
 
-//                SqlParameter param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
+            SqlParameter param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
 
-//                param.Direction = ParameterDirection.Output;
-//                adapter.InsertCommand = command;
+            param.Direction = ParameterDirection.Output;
+            adapter.InsertCommand = command;
 
 
-//                // update
-//                command = new SqlCommand(@"UPDATE People SET FIO = @FIO,
-//Birthday = @Birthday, Email = @Email, Phone = @Phone WHERE ID = @ID", connection);
+            // update
+            command = new SqlCommand(@"UPDATE People SET FIO = @FIO,
+Birthday = @Birthday, Email = @Email, Phone = @Phone WHERE ID = @ID", connection);
 
-//                command.Parameters.Add("@FIO", SqlDbType.NVarChar, -1, "FIO");
-//                command.Parameters.Add("@Birthday", SqlDbType.NVarChar, -1, "Birthday");
-//                command.Parameters.Add("@Email", SqlDbType.NVarChar, 100, "Email");
-//                command.Parameters.Add("@Phone", SqlDbType.NVarChar, -1, "Phone");
-//                param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
+            command.Parameters.Add("@FIO", SqlDbType.NVarChar, -1, "FIO");
+            command.Parameters.Add("@Birthday", SqlDbType.NVarChar, -1, "Birthday");
+            command.Parameters.Add("@Email", SqlDbType.NVarChar, 100, "Email");
+            command.Parameters.Add("@Phone", SqlDbType.NVarChar, -1, "Phone");
+            param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
 
-//                param.SourceVersion = DataRowVersion.Original;
+            param.SourceVersion = DataRowVersion.Original;
 
-//                adapter.UpdateCommand = command;
-//                //delete
-//                command = new SqlCommand("DELETE FROM People WHERE ID = @ID", connection);
-//                param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
-//                param.SourceVersion = DataRowVersion.Original;
-//                adapter.DeleteCommand = command;
+            adapter.UpdateCommand = command;
+            //delete
+            command = new SqlCommand("DELETE FROM People WHERE ID = @ID", connection);
+            param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
+            param.SourceVersion = DataRowVersion.Original;
+            adapter.DeleteCommand = command;
 
-                dt = new DataTable();
+            dt = new DataTable();
                 adapter.Fill(dt);
                 peopleDataGrid.DataContext = dt.DefaultView;
             }

@@ -24,7 +24,7 @@
                 <DataGridTextColumn x:Name="fIOColumn" Binding="{Binding FIO}" Header="Имя" Width="Auto"/>
                 <DataGridTextColumn x:Name="birthdayColumn" Binding="{Binding Birthday}" Header="Возраст" Width="Auto"/>
                 <DataGridTextColumn x:Name="emailColumn" Binding="{Binding Email}" Header="Зарплата" Width="Auto"/>
-                <DataGridTextColumn x:Name="phoneColumn" Binding="{Binding Phone}" Header="Департамент" Width="Auto"/>
+                <DataGridTextColumn x:Name="phoneColumn" Binding="{Binding depname}" Header="Департамент" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
 

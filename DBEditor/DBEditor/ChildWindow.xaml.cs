@@ -32,14 +32,12 @@ namespace DBEditor
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
+            textBoxid.Text = resultRow["Id"].ToString();
             textBoxName.Text = resultRow["Name"].ToString();
             textBoxAge.Text = resultRow["Age"].ToString();
             textBoxSalary.Text = resultRow["Salary"].ToString();
-
-        }
-
-       
+            comboBoxDep.Text = resultRow["depname"].ToString();
+        }       
     }
 }
 
