@@ -25,9 +25,9 @@ namespace DBEditor
     public partial class MainWindow : Window
     {
         SqlConnection connection;
-        SqlDataAdapter adapter;
+        SqlDataAdapter adapter, adapter2;
         DataTable dt;
-
+        DataSet dc;
         public MainWindow()
         {
 
@@ -48,23 +48,23 @@ namespace DBEditor
                 };
                 connection = new SqlConnection(connectionStringBuilder.ConnectionString);
                 adapter = new SqlDataAdapter();
-                SqlCommand command = new SqlCommand("SELECT emp.id, emp.name, emp.age, emp.salary, dep.name as depname FROM Employee emp LEFT JOIN Department dep on emp.idDep = dep.id", connection);
+                SqlCommand command = new SqlCommand("SELECT emp.id, emp.name, emp.age, emp.salary, dep.name as depname, emp.idDep FROM Employee emp LEFT JOIN Department dep on emp.idDep = dep.id", connection);
                 adapter.SelectCommand = command;
 
+           
             //insert
-            command = new SqlCommand(@"INSERT INTO Employee ( name,age,salary,idDep) 
-                          VALUES ( @name,@age,@salary,@idDep); SET @ID = @@IDENTITY;",
+            command = new SqlCommand(@"INSERT INTO Employee ( id,name,age,salary,idDep) 
+                          VALUES (@id, @name,@age,@salary,@idDep);",
                           connection);
-
-            //command.Parameters.Add("@id", SqlDbType.Int, -1, "id");
+            command.Parameters.Add("@ID", SqlDbType.NVarChar, -1, "id");
             command.Parameters.Add("@name", SqlDbType.NVarChar, -1, "name");
             command.Parameters.Add("@age", SqlDbType.Int, 100, "age");
             command.Parameters.Add("@salary", SqlDbType.Int, -1, "salary");
             command.Parameters.Add("@idDep", SqlDbType.Int, -1, "idDep");
 
-            SqlParameter param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
+            SqlParameter param; //= command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
 
-            param.Direction = ParameterDirection.Output;
+           // param.Direction = ParameterDirection.Output;
             adapter.InsertCommand = command;
 
 
@@ -73,16 +73,16 @@ namespace DBEditor
 age = @age, salary = @salary, idDep = @idDep WHERE ID = @ID", connection);
 
             command.Parameters.Add("@name", SqlDbType.NVarChar, -1, "name");
-            command.Parameters.Add("@age", SqlDbType.NVarChar, -1, "age");
-            command.Parameters.Add("@salary", SqlDbType.NVarChar, 100, "salary");
-            command.Parameters.Add("@idDep", SqlDbType.NVarChar, -1, "idDep");
+            command.Parameters.Add("@age", SqlDbType.Int, 100, "age");
+            command.Parameters.Add("@salary", SqlDbType.Int, -1, "salary");
+            command.Parameters.Add("@idDep", SqlDbType.Int, -1, "idDep");
             param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
 
             param.SourceVersion = DataRowVersion.Original;
 
             adapter.UpdateCommand = command;
             //delete
-            command = new SqlCommand("DELETE FROM People WHERE ID = @ID", connection);
+            command = new SqlCommand("DELETE FROM Employee WHERE ID = @ID", connection);
             param = command.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
             param.SourceVersion = DataRowVersion.Original;
             adapter.DeleteCommand = command;
@@ -90,6 +90,12 @@ age = @age, salary = @salary, idDep = @idDep WHERE ID = @ID", connection);
             dt = new DataTable();
                 adapter.Fill(dt);
                 peopleDataGrid.DataContext = dt.DefaultView;
+
+            adapter2 = new SqlDataAdapter();
+            SqlCommand command2 = new SqlCommand("SELECT id, name FROM Department", connection);
+            adapter2.SelectCommand = command2;
+            dc = new DataSet();
+            adapter2.Fill(dc,"Department");
             }
 
 
@@ -97,9 +103,9 @@ age = @age, salary = @salary, idDep = @idDep WHERE ID = @ID", connection);
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            // добавим новую строку
+            DataSet _dc = dc.Copy();
             DataRow newRow = dt.NewRow();
-            ChildWindow childWindow = new ChildWindow(newRow);
+            ChildWindow childWindow = new ChildWindow(newRow,_dc);
             childWindow.ShowDialog();
 
             if (childWindow.DialogResult.Value)
@@ -110,19 +116,27 @@ age = @age, salary = @salary, idDep = @idDep WHERE ID = @ID", connection);
         }
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            DataRowView newRow = (DataRowView)peopleDataGrid.SelectedItem;
-            newRow.BeginEdit();
-            ChildWindow childWindow = new ChildWindow(newRow.Row);
-            childWindow.ShowDialog();
-            if (childWindow.DialogResult.HasValue && childWindow.DialogResult.Value)
+            DataSet _dc = dc.Copy();
+            if (peopleDataGrid.SelectedItem != null)
             {
-                newRow.EndEdit();
-                adapter.Update(dt);
+
+
+                DataRowView newRow = (DataRowView)peopleDataGrid.SelectedItem;
+
+                newRow.BeginEdit();
+                ChildWindow childWindow = new ChildWindow(newRow.Row, _dc);
+                childWindow.ShowDialog();
+                if (childWindow.DialogResult.HasValue && childWindow.DialogResult.Value)
+                {
+                    newRow.EndEdit();
+                    adapter.Update(dt);
+                }
+                else
+                {
+                    newRow.CancelEdit();
+                }
             }
-            else
-            {
-                newRow.CancelEdit();
-            }
+            else MessageBox.Show("Выберите строку");
         }
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {

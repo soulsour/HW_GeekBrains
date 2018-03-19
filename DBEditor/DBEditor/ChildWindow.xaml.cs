@@ -14,18 +14,24 @@ namespace DBEditor
 
      
         public DataRow resultRow { get; set; }
-        public ChildWindow(DataRow dataRow)
+        public ChildWindow(DataRow dataRow, DataSet dc)
         {
             InitializeComponent();
             resultRow = dataRow;
-        }
+            comboBoxDep.ItemsSource = dc.Tables["Department"].DefaultView;
+            comboBoxDep.DisplayMemberPath="name";
+            comboBoxDep.SelectedValuePath = "id";
+            comboBoxDep.SelectedIndex = 0;
 
+
+        }
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
             resultRow["ID"] = textBoxid.Text;
             resultRow["Name"] = textBoxName.Text;
             resultRow["Age"] = textBoxAge.Text;
             resultRow["Salary"] = textBoxSalary.Text;
+            resultRow["depname"] = comboBoxDep.SelectedIndex + 1;
             this.DialogResult = true;
 
         }
@@ -36,7 +42,7 @@ namespace DBEditor
             textBoxName.Text = resultRow["Name"].ToString();
             textBoxAge.Text = resultRow["Age"].ToString();
             textBoxSalary.Text = resultRow["Salary"].ToString();
-            comboBoxDep.Text = resultRow["depname"].ToString();
+            
         }       
     }
 }

@@ -32,7 +32,7 @@
             <TextBlock x:Name = "TextBlockSalary"  Grid.Column="0" Grid.Row="3" Text="Зарплата" />
             <TextBox x:Name="textBoxSalary" Grid.Column="1" Grid.Row="3" Text="Введите зарплату" />
             <TextBlock x:Name = "TextBlockDep" Grid.Column="0" Grid.Row="4" Text = "Департамент"  />
-        <ComboBox x:Name="comboBoxDep" ItemsSource="{Binding depname}"  Grid.Column="1" Grid.Row="4" SelectedIndex="0"/>
+        <ComboBox x:Name="comboBoxDep" ItemsSource="{Binding depname}"   Grid.Column="1" Grid.Row="4" SelectedIndex="1"/>
 
         <Button x:Name="buttonSave" Content="Save" Grid.Column="0" Grid.Row="5" Click="buttonSave_Click" Grid.ColumnSpan="2" />
     </Grid>
